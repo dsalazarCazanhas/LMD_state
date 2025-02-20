@@ -1,0 +1,30 @@
+services:
+  selenium:
+    image: selenium/standalone-chrome:97.0-20250202
+    container_name: selenium
+    restart: unless-stopped
+    shm_size: 1g
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    networks:
+      - majula
+
+  app:
+    build: .
+    container_name: lmdstate
+    restart: unless-stopped
+    depends_on:
+      - selenium
+    environment:
+      - SELENIUM_REMOTE_URL=http://selenium:4444/wd/hub
+      - N8N_URL=http://nyto:5678/webhook-test/39898e23-90cf-43d4-9cc3-2e06a4fe924c
+      - PAGE=https://www.exteriores.gob.es/Consulados/lahabana/es/Consulado/Paginas/Tramites.aspx
+    ports:
+      - "8100:8000"
+    networks:
+      - majula
+
+networks:
+  majula:
+    external: true

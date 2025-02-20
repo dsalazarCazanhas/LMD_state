@@ -1,15 +1,17 @@
 import httpx
-import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
+import os
+
+N8N_URL: str = os.getenv("N8N_URL")
+SELENIUM_REMOTE_URL: str = os.getenv("SELENIUM_REMOTE_URL")
+PAGE: str = os.getenv("PAGE")
 
 app = FastAPI()
 
@@ -28,12 +30,12 @@ def consultar_expediente(no_expediente, apellidos_titular):
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
-    driver = None  # Initialize outside try block
+    driver = webdriver.Remote(
+    command_executor=SELENIUM_REMOTE_URL,
+    options=options)
     
     try:
-        # Initialize WebDriver
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        page = "https://www.exteriores.gob.es/Consulados/lahabana/es/Consulado/Paginas/Tramites.aspx"
+        page = PAGE
         driver.get(page)
 
         # Wait for iframe and switch to it
@@ -101,7 +103,7 @@ def get_expediente_status(request: ExpedienteRequest):
     expediente_data = consultar_expediente(request.no_expediente, request.apellidos_titular)
     
     if expediente_data:
-        API_ENDPOINT = "http://192.168.1.90:5678/webhook-test/39898e23-90cf-43d4-9cc3-2e06a4fe924c"
+        API_ENDPOINT = N8N_URL
         api_response = send_data_to_api(expediente_data, API_ENDPOINT)
         return {"expediente_data": expediente_data, "api_response": api_response}
     
