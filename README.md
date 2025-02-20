@@ -15,16 +15,6 @@ This project provides a **FastAPI webhook** that automates the process of checki
 
 ---
 
-## 📂 Project Structure
-```
-📦 expediente-checker-api
- ├── 📄 webhook.py       # Main FastAPI webhook script
- ├── 📄 requirements.txt # Dependencies
- ├── 📄 README.md        # Documentation (this file)
-```
-
----
-
 ## 🔧 Installation & Setup
 
 ### 1️⃣ Install Dependencies
