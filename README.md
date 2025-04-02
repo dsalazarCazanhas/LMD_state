@@ -20,7 +20,7 @@ This project provides a **FastAPI webhook** that automates the process of checki
 ### 1️⃣ Install Dependencies
 Make sure you have **Python 3.8+** installed. Then, install the required packages:
 ```sh
-pip install -r requirements.txt
+poetry install --no-root
 ```
 
 The webhook will be available at:
@@ -51,5 +51,5 @@ This project is licensed under the **MIT License**.
 ---
 
 ## 👨‍💻 Author
-Developed by [Your Name]. Feel free to contribute or report issues!
+Developed by [Dayron Salazar]. Feel free to contribute or report issues!
 

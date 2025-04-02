@@ -16,10 +16,12 @@ services:
     restart: unless-stopped
     depends_on:
       - selenium
+    env_file:
+      - .env
     environment:
-      - SELENIUM_REMOTE_URL=http://selenium:4444/wd/hub
-      - N8N_URL=http://nyto:5678/webhook-test/39898e23-90cf-43d4-9cc3-2e06a4fe924c
-      - PAGE=https://www.exteriores.gob.es/Consulados/lahabana/es/Consulado/Paginas/Tramites.aspx
+      - SELENIUM_REMOTE_URL=${SELENIUM_REMOTE_URL}
+      - N8N_URL=${N8N_URL}
+      - PAGE=${PAGE}
     ports:
       - "8100:8000"
     networks:
