@@ -6,7 +6,7 @@ authors = [
     {name = "Dayron Salazar",email = "dsalazarcazanhas@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "selenium (>=4.28.1,<5.0.0)",
     "webdriver-manager (>=4.0.2,<5.0.0)",
