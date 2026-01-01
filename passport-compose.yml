@@ -1,0 +1,7 @@
+services:
+  passport:
+    build:
+      context: .
+      dockerfile: Passport
+    container_name: passport
+    restart: "no"
