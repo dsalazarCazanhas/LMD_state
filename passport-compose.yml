@@ -4,4 +4,7 @@ services:
       context: .
       dockerfile: Passport
     container_name: passport
+    volumes:
+      - ~/OneDrive/Desktop:/app/artifacts
+      - ~/OneDrive/Desktop:/app/results:rw
     restart: "no"

@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,pycharm,git,windows,virtualenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,pycharm,git,windows,virtualenv
 
+artifacts/
 examples/
 examples/*
 ### Git ###
