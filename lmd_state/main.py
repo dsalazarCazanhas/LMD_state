@@ -1,3 +1,4 @@
+from venv import logger
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -98,13 +99,12 @@ def send_data_to_api(data, api_url):
         raise HTTPException(status_code=500, detail=f"🚨 Request Error: {e}")
 
 @app.post("/expediente")
-def get_expediente_status(request: ExpedienteRequest):
+async def get_expediente_status(request: ExpedienteRequest):
     """Receives expediente details via POST, fetches status, and sends it to another API."""
+
     expediente_data = consultar_expediente(request.no_expediente, request.apellidos_titular)
-    
+
     if expediente_data:
-        API_ENDPOINT = N8N_URL
-        api_response = send_data_to_api(expediente_data, API_ENDPOINT)
-        return {"expediente_data": expediente_data, "api_response": api_response}
+        return {"expediente_data": expediente_data}
     
     return {"error": "Failed to fetch expediente status"}
