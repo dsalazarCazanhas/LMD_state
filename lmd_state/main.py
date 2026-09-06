@@ -22,7 +22,7 @@ class ExpedienteRequest(BaseModel):
 
 def consultar_expediente(no_expediente, apellidos_titular):
     """Automates the process of checking expediente status and returns the result."""
-    
+
     # Setup headless Chrome
     options = Options()
     options.add_argument("--headless")  # Run without GUI
@@ -34,7 +34,7 @@ def consultar_expediente(no_expediente, apellidos_titular):
     driver = webdriver.Remote(
     command_executor=SELENIUM_REMOTE_URL,
     options=options)
-    
+
     try:
         page = PAGE
         driver.get(page)
@@ -66,7 +66,7 @@ def consultar_expediente(no_expediente, apellidos_titular):
         estado_expediente = WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.XPATH, "//h2[contains(text(), 'Estado del expediente')]/following-sibling::p/strong"))
         )
-        
+
         print(f"✅ Estado del expediente: {estado_expediente.text}")
 
         # Return the extracted information
@@ -106,5 +106,9 @@ async def get_expediente_status(request: ExpedienteRequest):
 
     if expediente_data:
         return {"expediente_data": expediente_data}
-    
+
     return {"error": "Failed to fetch expediente status"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}

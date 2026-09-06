@@ -1,75 +1,13 @@
-name: "anorlondon"
+name: 'lmdstate'
 services:
-  lordOfCinder:
-    image: postgres:17.2
-    container_name: "gwyn"
-    restart: unless-stopped
-    shm_size: 64mb
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - gwyn_data:/var/lib/postgresql/data
-    networks:
-      - majula
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  gravelord:
-    build:
-      context: ./n8n-build-python
-      dockerfile: Dockerfile
-    image: n8n-python:latest
-    container_name: "nyto"
-    restart: unless-stopped
-    networks:
-      - majula
-    env_file:
-      - .env
-    environment:
-      - DB_TYPE=${DB_TYPE}
-      - DB_POSTGRESDB_HOST=gwyn
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
-      - DB_POSTGRESDB_USER=${POSTGRES_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
-      - N8N_SECURE_COOKIE=false
-      - N8N_METRICS=true
-      - N8N_LOG_LEVEL=debug
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_REINSTALL_MISSING_PACKAGES=true
-      - N8N_COMMUNITY_PACKAGES_ENABLED=true
-      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - GENERIC_TIMEZONE=America/Mexico_City
-    ports:
-      - "5678:5678"
-    volumes:
-      - nyto_data:/home/node/.n8n
-      - ./mcp_files:/home/node/mcp
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://127.0.0.1:5678/metrics"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    depends_on:
-      lordOfCinder:
-        condition: service_healthy
-  
   selenium:
     image: selenium/standalone-chrome:97.0-20250202
     container_name: selenium
     restart: unless-stopped
     shm_size: 1g
     #ports:
-      #- "4444:4444"
-      #- "7900:7900"
+    #- "4444:4444"
+    #- "7900:7900"
     networks:
       - majula
 
@@ -87,13 +25,9 @@ services:
       - PAGE=${PAGE}
     networks:
       - majula
-    ports:
-      - "8100:8000"
+    #ports:
+    #- '8100:8000'
 
 networks:
   majula:
     external: true
-
-volumes:
-  gwyn_data:
-  nyto_data:
